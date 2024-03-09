@@ -18,3 +18,20 @@ def get_sudoku():
         print("\nYour entered Sudoku puzzle is:")
         sudoku.print_board()
         return sudoku
+
+
+def load_sudoku(filepath):
+    board = []
+    with open(filepath, 'r') as file:
+        for line in file:
+            row = line.strip()  # Remove any leading/trailing whitespace
+            if len(row) == 9 and all(c in "123456789x" for c in row):
+                board.append(['x' if c == 'x' else int(c) for c in row])
+            else:
+                raise ValueError(
+                    "Invalid row in Sudoku file. Each row must be exactly 9 characters long with numbers 1-9 or 'x' for unknowns.")
+
+    sudoku = Sudoku.SudokuBoard(board)
+    print("\nLoaded Sudoku puzzle is:")
+    sudoku.print_board()
+    return sudoku
