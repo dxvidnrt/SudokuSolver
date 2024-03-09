@@ -106,6 +106,9 @@ class NumberHolder:
         else:
             self.numbers = numbers
 
+    def __init__(self):
+        self.numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
     def __str__(self):
         return 'x'
 
