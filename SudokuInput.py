@@ -7,8 +7,8 @@ def get_sudoku():
         for i in range(9):
             while True:
                 row = input(f"Enter row {i + 1} (e.g., 5xx2x7xx4): ")
-                if len(row) == 9 and all(c in "0123456789x" for c in row):
-                    board.append([0 if c == 'x' else int(c) for c in row])
+                if len(row) == 9 and all(c in "123456789x" for c in row):
+                    board.append(['x' if c == 'x' else int(c) for c in row])
                     break
                 else:
                     print(
