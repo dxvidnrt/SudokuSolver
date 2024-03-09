@@ -54,23 +54,31 @@ class SudokuBoard:
         return True
 
     def solve(self):
-        while not self.is_solved():
+        changed = True
+        while not self.is_solved() and changed:
+            if not changed:
+                print("Could not solve sudoku any further")
+                return
+            changed = False
             self.print_board()
             for row in range(9):
                 for col in range(9):
                     field = self.board[row][col]
                     if isinstance(field, NumberHolder):
                         continue
-                    self.denote(row, col, field)
+                    if self.denote(row, col, field):
+                        changed = True
         print("The board is solved:")
         self.print_board()
 
     def denote(self, row, col, num):
         # Check the row
+        changed = False
         for i in range(9):
             if i != col and isinstance(self.board[row][i], NumberHolder):
                 place_holder: NumberHolder = self.board[row][i]
-                place_holder.remove_number(num)
+                if place_holder.remove_number(num):
+                    changed = True
                 number: int = place_holder.is_defined()
                 if number:
                     self.board[row][i] = number
@@ -79,7 +87,8 @@ class SudokuBoard:
         for j in range(9):
             if j != row and isinstance(self.board[j][col], NumberHolder):
                 place_holder: NumberHolder = self.board[j][col]
-                place_holder.remove_number(num)
+                if place_holder.remove_number(num):
+                    changed = True
                 number: int = place_holder.is_defined()
                 if number:
                     self.board[j][col] = number
@@ -93,11 +102,13 @@ class SudokuBoard:
                     continue
                 if isinstance(self.board[i][j], NumberHolder):
                     place_holder: NumberHolder = self.board[i][j]
-                    place_holder.remove_number(num)
+                    if place_holder.remove_number(num):
+                        changed = True
                     number: int = place_holder.is_defined()
                     if number:
                         self.board[i][j] = number
 
+        return changed
 
 class NumberHolder:
     def __init__(self, numbers):
@@ -112,11 +123,12 @@ class NumberHolder:
     def __str__(self):
         return 'x'
 
-    def remove_number(self, number: int):
+    def remove_number(self, number: int) -> bool:
         try:
             self.numbers.remove(number)
+            return True  # Number was successfully removed
         except ValueError:
-            pass
+            return False  # Number was not found, hence not removed
 
     def is_defined(self):
         if len(self.numbers) == 1:

@@ -3,7 +3,7 @@ import SudokuInput
 
 
 def main():
-    sudoku = SudokuInput.get_sudoku()
+    sudoku = SudokuInput.load_sudoku('ExampleSudokus/sudoku.txt')
     sudoku.solve()
 
 if __name__ == "__main__":
