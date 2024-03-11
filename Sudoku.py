@@ -79,9 +79,11 @@ class SudokuBoard:
                 place_holder: NumberHolder = self.board[row][i]
                 if place_holder.remove_number(num):
                     changed = True
+                    print(f'Removed {num} from row {row} and col {i}')
                 number: int = place_holder.is_defined()
                 if number:
                     self.board[row][i] = number
+                    print(f'Set {num} in row {row} and col {i}')
 
         # Check the column
         for j in range(9):
@@ -89,9 +91,11 @@ class SudokuBoard:
                 place_holder: NumberHolder = self.board[j][col]
                 if place_holder.remove_number(num):
                     changed = True
+                    print(f'Removed {num} from row {j} and col {col}')
                 number: int = place_holder.is_defined()
                 if number:
                     self.board[j][col] = number
+                    print(f'Set {num} in row {j} and col {col}')
 
         # Check the box
         box_x = col // 3
@@ -104,11 +108,13 @@ class SudokuBoard:
                     place_holder: NumberHolder = self.board[i][j]
                     if place_holder.remove_number(num):
                         changed = True
+                        print(f'Removed {num} from row {i} and col {j}')
                     number: int = place_holder.is_defined()
                     if number:
                         self.board[i][j] = number
-
+                        print(f'Set {num} in row {i} and col {j}')
         return changed
+
 
 class NumberHolder:
     def __init__(self, numbers):
@@ -135,3 +141,78 @@ class NumberHolder:
             return self.numbers[0]
         return 0
 
+
+class SudokuBoardSimple:
+    def __init__(self, board=None):
+        if board is None:
+            # Initialize an empty board
+            self.board = [['x' for _ in range(9)] for _ in range(9)]
+        else:
+            self.board = board
+            for row in range(9):
+                for col in range(9):
+                    if self.board[row][col] == 'x':
+                        self.board[row][col] = 0
+
+    def set_field(self, row, col, num):
+        self.board[row][col] = num
+
+    def print_board(self):
+        for i in range(9):
+            if i % 3 == 0 and i != 0:
+                print("- - - - - - - - - - - -")
+            for j in range(9):
+                if j % 3 == 0 and j != 0:
+                    print(" | ", end="")
+
+                if j == 8:
+                    print(self.board[i][j])
+                else:
+                    print(str(self.board[i][j]) + " ", end="")
+
+    def get_free_field(self):
+        for row in range(9):
+            for col in range(9):
+                if self.board[row][col] == 0:
+                    return row, col
+        raise ValueError("Board is solved")
+
+    def is_valid_move(self, row, col, num):
+        # Check the row
+        for i in range(9):
+            if self.board[row][i] == num:
+                return False
+
+        # Check the column
+        for i in range(9):
+            if self.board[i][col] == num:
+                return False
+
+        # Check the box
+        box_x = col // 3
+        box_y = row // 3
+        for i in range(box_y*3, box_y*3 + 3):
+            for j in range(box_x*3, box_x*3 + 3):
+                if self.board[i][j] == num:
+                    return False
+        return True
+
+    def is_solved(self):
+        for row in range(9):
+            for col in range(9):
+                if self.board[row][col] == 0:
+                    return False
+        return True
+
+
+def solve_board_depth(board: SudokuBoardSimple):
+    if board.is_solved():
+        return board
+
+    row, col = board.get_free_field()
+    for num in range(1, 10):
+
+        if board.is_valid_move(row, col, num):
+            board_modify = board
+            board_modify.set_field(row, col, num)
+            return solve_board_depth(board_modify)
