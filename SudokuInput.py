@@ -1,6 +1,5 @@
 import Sudoku
 
-
 def get_sudoku():
         print("Enter your Sudoku puzzle. Use numbers 1-9 for known values and 'x' for unknown values.")
         board = []

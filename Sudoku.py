@@ -14,11 +14,9 @@ class SudokuBoard:
                         self.board[row][col] = 0
 
     def clear_field(self, row, col):
-        print(f"clear row: {row}, col: {col}.")
         self.set_field(row, col, 0)
 
     def set_field(self, row, col, num):
-        print(f"Set {num} in row: {row}, col: {col}.")
         self.board[row][col] = num
 
     def print_board(self):
