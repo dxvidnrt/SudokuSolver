@@ -154,7 +154,12 @@ class SudokuBoardSimple:
                     if self.board[row][col] == 'x':
                         self.board[row][col] = 0
 
+    def clear_field(self, row, col):
+        print(f"clear row: {row}, col: {col}.")
+        self.set_field(row, col, 0)
+
     def set_field(self, row, col, num):
+        print(f"Set {num} in row: {row}, col: {col}.")
         self.board[row][col] = num
 
     def print_board(self):
@@ -206,13 +211,26 @@ class SudokuBoardSimple:
 
 
 def solve_board_depth(board: SudokuBoardSimple):
+    # Check if the board is already solved
     if board.is_solved():
         return board
 
-    row, col = board.get_free_field()
-    for num in range(1, 10):
+    # Find the first empty field
+    free_field = board.get_free_field()
+    if not free_field:
+        return None  # No solution found (should not happen if the input is valid)
+    row, col = free_field
 
+    for num in range(1, 10):
         if board.is_valid_move(row, col, num):
-            board_modify = board
-            board_modify.set_field(row, col, num)
-            return solve_board_depth(board_modify)
+            # Make a move
+            board.set_field(row, col, num)
+
+            # Continue solving the rest of the board
+            if solve_board_depth(board):
+                return board  # If solved, return the solved board
+
+            # Undo the move (backtrack) if it leads to no solution
+            board.clear_field(row, col)
+
+    return None  # No valid number found for this field, need to backtrack

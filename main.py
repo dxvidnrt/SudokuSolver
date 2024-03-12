@@ -3,9 +3,9 @@ import SudokuInput
 
 
 def main():
-    sudoku = SudokuInput.load_sudoku('ExampleSudokus/simple_soduko.txt')
+    sudoku = SudokuInput.load_sudoku('ExampleSudokus/sudoku.txt')
     solved_board = Sudoku.solve_board_depth(sudoku)
-    print(solved_board)
+    solved_board.print_board()
 
 if __name__ == "__main__":
     main()
