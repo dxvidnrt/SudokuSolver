@@ -31,7 +31,7 @@ def load_sudoku(filepath):
                 raise ValueError(
                     "Invalid row in Sudoku file. Each row must be exactly 9 characters long with numbers 1-9 or 'x' for unknowns.")
 
-    sudoku = Sudoku.SudokuBoardSimple(board)
+    sudoku = Sudoku.SudokuBoard(board)
     print("\nLoaded Sudoku puzzle is:")
     sudoku.print_board()
     return sudoku

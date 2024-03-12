@@ -1,7 +1,7 @@
 from typing import *
 
 
-class SudokuBoardSimple:
+class SudokuBoard:
     def __init__(self, board=None):
         if board is None:
             # Initialize an empty board
@@ -69,7 +69,7 @@ class SudokuBoardSimple:
         return True
 
 
-def solve_board_depth(board: SudokuBoardSimple):
+def solve_board_depth(board: SudokuBoard):
     # Check if the board is already solved
     if board.is_solved():
         return board
